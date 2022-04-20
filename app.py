@@ -28,7 +28,8 @@ data = dn.s_download(ticker, "20210101", "20221231")
 display(data)
 
 # 전략 클래스
-model = st.TestStrategy
+model = st.LinearRegressionModel
+
 # 백테스팅
 cerebro = bt.backtrader_run(data, model)
 

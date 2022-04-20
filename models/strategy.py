@@ -1,3 +1,5 @@
+import numpy as np
+
 import backtrader as bt
 import backtrader.feeds as btFeeds
 
@@ -119,4 +121,54 @@ class TestStrategy(bt.Strategy):
         
         # keep track of results for each period backtest
         strategyResults[self.params.maperiod] = self.broker.getvalue()
+
+
+from sklearn import linear_model
+
+class LinearRegressionModel(bt.Strategy):
+    # params = (
+    #     ("linear_reg_length", 20),
+    # )
+       
+    def __init__(self):
+        self.dataclose = self.datas[0].close
+        self.datalow = self.datas[0].low
+        self.LR_low_trend = LinearRegression(self.datalow, len=20)
+
+    def next(self):
+        if self.LR_low_trend < self.data.close and (not self.long):
+            self.size_to_buy = self.broker.getvalue()/ self.dataclose[0]
+            self.order = self.buy(exectype=bt.Order.Market, size=self.size_to_buy)
+        elif self.LR_low_trend > self.data.close and self.long:
+            self.order = self.sell(exectype=bt.Order.Market, size=self.size_to_buy)
+
+class LinearRegression(bt.Indicator):
+    alias = ("LR")
+
+    lines = ("linear_regression", "ma")
+    params = (
+        ("len", 300)
+    )
+    iter = 0
+
+    def changeLen(self, length):
+        self.params.len = length
+
+
+    def next(self):
+        if (self.iter > self.params.len):
+            raw_prices = self.data.get(size=self.params.len)
+            prices = np.array(raw_prices).reshape(-1, 1)
+            x_line = np.array([i for i in range(0, self.params.len)]).reshape(-1, 1)
+
+            # create linear regression object
+            regr = linear_model.LinearRegression()
+
+            # train the model using the training sets
+            regr.fit(x_line, prices)
+            prediction = regr.predict(np.array([self.params.len]).reshape(-1, 1))
+            self.lines.linear_regression[0] = prediction
+
+        self.iter += 1
+
         
