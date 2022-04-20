@@ -2,17 +2,21 @@ from IPython.display import display
 import pandas as pd
 import numpy as np
 import os
-import preprocessing.create_logistic_regression_data as lrdata
+import preprocessing.download as dn
 
-load_data_path = os.getcwd()
-load_data_path = os.path.join(load_data_path, "datasets")
-load_data = os.path.join(load_data_path, "000270")
-data = pd.read_csv(load_data)
-data["date"] = pd.to_datetime(data["date"])
-data = data.reset_index(drop=True)
+import argparse
 
-# 날짜 인덱스로 변환
-data = data.set_index("date")
+# 인자값을 받을 수 있는 인스턴스 생성
+parser = argparse.ArgumentParser(description="종목코드를 입력하세요.")
+# 입력받을 인자값 등록
+parser.add_argument("--ticker", required=True, help="종목코드를 입력하세요.")
+# 입력받은 인자값을 args에 저장 (type: namespace)
+args = parser.parse_args()
+ticker = args.ticker
 
-data = lrdata.create_training_data_using_lag(data, 50)
+save_data_path = os.getcwd()
+save_data_path = os.path.join(save_data_path, "datasets")
+save_data = os.path.join(save_data_path, ticker)
+
+data = dn.s_download(ticker, "20210101", "20211232")
 display(data)
