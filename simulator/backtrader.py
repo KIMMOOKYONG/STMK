@@ -7,7 +7,7 @@ import backtrader.feeds as btFeeds
 """
 backtrader 시뮬레이션 실행
 """
-def backtrader_run(data, strategy, init_cash=1_000_000, commission=0.0, stake=10):
+def backtrader_run(data, strategy, init_cash=1_000_000, commission=0.0, stake=1):
 
     data = bt.feeds.PandasData(dataname=data)
 

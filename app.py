@@ -25,11 +25,10 @@ save_results_path = os.path.join(save_results_path, "results")
 save_results_path = os.path.join(save_results_path, ticker + ".png")
 
 data = dn.s_download(ticker, "20210101", "20221231")
-
 display(data)
 
 # 전략 클래스
-model = st.ta
+model = st.TestStrategy
 # 백테스팅
 cerebro = bt.backtrader_run(data, model)
 
