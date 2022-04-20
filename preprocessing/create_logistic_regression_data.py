@@ -17,7 +17,7 @@ date,open,high,low,close,volume
 반환 데이터 프레임 구조(lag_range=5)
 date,today,lag_1,lag_2,lag_3,lag_4,lag_5,volume,direction
 """
-def create_training_data(data, lag_range=5):
+def create_training_data_using_lag(data, lag_range=5):
     """
     @data: 입력 데이터 프레임
     @lag_range: 분석시 참조할 주가 변화(시차) 기간 설정

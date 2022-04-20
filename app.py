@@ -14,5 +14,5 @@ data = data.reset_index(drop=True)
 # 날짜 인덱스로 변환
 data = data.set_index("date")
 
-data = lrdata.create_training_data(data, 50)
+data = lrdata.create_training_data_using_lag(data, 50)
 display(data)
