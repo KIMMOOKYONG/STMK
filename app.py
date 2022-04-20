@@ -24,7 +24,7 @@ save_results_path = os.getcwd()
 save_results_path = os.path.join(save_results_path, "results")
 save_results_path = os.path.join(save_results_path, ticker + ".png")
 
-data = dn.s_download(ticker, "20220101", "20221231")
+data = dn.s_download(ticker, "20210101", "20221231")
 
 display(data)
 
